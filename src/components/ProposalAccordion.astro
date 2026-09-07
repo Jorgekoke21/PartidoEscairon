@@ -2,6 +2,7 @@
 import { ChevronDown, UsersRound, Lightbulb, Settings2, Target } from 'lucide-astro';
 import { categories } from '../data/categories';
 import type { Proposal } from '../data/proposals';
+import { route } from '../data/site';
 
 interface Props { categorySlug: string; items: Proposal[]; open?: boolean; showRows?: boolean; }
 const { categorySlug, items, open = false, showRows = false } = Astro.props;
@@ -20,7 +21,7 @@ const first = items[0];
       <div class="proposal-detail"><Settings2 size={29} /><div><strong>Como o faremos</strong><p>{first.implementation}</p></div></div>
       <div class="proposal-detail"><Target size={29} /><div><strong>Impacto</strong><p>{first.impact}</p></div></div>
     </div>}
-    {showRows && items.slice(1).map((item) => <a class="proposal-row" href={`/propostas#${item.slug}`}><span>›</span><span>{item.title}</span><span>Ver proposta →</span></a>)}
+    {showRows && items.slice(1).map((item) => <a class="proposal-row" href={route(`/propostas#${item.slug}`)}><span>›</span><span>{item.title}</span><span>Ver proposta →</span></a>)}
     {!showRows && items.slice(1).map((item) => <div class="proposal-row static"><span>›</span><span>{item.title}</span></div>)}
   </div>
 </section>
