@@ -12,7 +12,7 @@ const activePath = active ? route(active) : '';
       {site.navigation.map((item) => <a class:list-active={activePath === item.href} href={item.href}>{item.label}</a>)}
       <button class="icon-button nav-search" aria-label="Buscar" title="Buscar"><Search size={18} strokeWidth={1.8} /></button>
     </nav>
-    <button class="mobile-menu-toggle icon-button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"><Menu class="menu-open" size={23} /><X class="menu-close" size={23} /></button>
+    <button class="mobile-menu-toggle icon-button" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"><Menu class="menu-open" size={23} /><X class="menu-close" size={23} /></button>
   </div>
   <div class="mobile-menu" id="mobile-menu" hidden>
     <nav aria-label="Navegación móbil">
@@ -23,9 +23,22 @@ const activePath = active ? route(active) : '';
 <script>
   const toggle = document.querySelector('.mobile-menu-toggle');
   const menu = document.querySelector<HTMLElement>('#mobile-menu');
+  const setMenuState = (open: boolean) => {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Pechar menú' : 'Abrir menú');
+    menu.hidden = !open;
+  };
+
+  setMenuState(false);
   toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!open));
-    if (menu) menu.hidden = open;
+    setMenuState(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuState(false)));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenuState(false);
+  });
+  window.addEventListener('resize', () => {
+    if (window.matchMedia('(min-width: 901px)').matches) setMenuState(false);
   });
 </script>
