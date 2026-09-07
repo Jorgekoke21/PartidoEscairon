@@ -1,0 +1,9 @@
+---
+import { Instagram, Facebook, Mail } from 'lucide-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+<BaseLayout title="Contacto · PSOE O Saviñao" active="/contacto">
+  <section class="page-intro"><div class="container"><span class="eyebrow-line"></span><h1>Contacto</h1><p>Estamos aquí para escoitarte. As canles reais de contacto incorporaranse cando se faciliten.</p></div></section>
+  <section class="section soft"><div class="container" style="max-width:760px"><div class="team-note"><div><h2 style="font-family:Manrope,sans-serif;font-size:30px;margin-top:0">Falamos?</h2><p class="empty-note">Non se inventan enderezos, correos nin URLs. Esta páxina queda preparada para engadir Instagram, Facebook e email reais.</p><div class="footer-social" style="margin-top:22px"><span><Instagram size={18} /> Instagram</span><span><Facebook size={18} /> Facebook</span><span><Mail size={18} /> Email</span></div></div><ContactForm /></div></div></section>
+</BaseLayout>

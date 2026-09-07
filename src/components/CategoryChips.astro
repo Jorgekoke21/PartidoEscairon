@@ -1,0 +1,25 @@
+---
+import { categories } from '../data/categories';
+interface Props { includeAll?: boolean; active?: string; target?: string; }
+const { includeAll = true, active = 'todas', target = 'propostas' } = Astro.props;
+---
+<div class="chips-scroll" data-category-chips data-target={target} role="tablist" aria-label="Filtrar por temática">
+  {includeAll && <button class="chip" class:is-active={active === 'todas'} data-category="todas" role="tab" aria-selected={active === 'todas'}>Todas</button>}
+  {categories.map((category) => <button class="chip" class:is-active={active === category.slug} data-category={category.slug} role="tab" aria-selected={active === category.slug}>{category.chip}</button>)}
+</div>
+<script>
+  document.querySelectorAll('[data-category-chips]').forEach((root) => {
+    root.querySelectorAll('[data-category]').forEach((chip) => chip.addEventListener('click', () => {
+      const value = chip.getAttribute('data-category') || 'todas';
+      root.querySelectorAll('[data-category]').forEach((item) => { item.classList.toggle('is-active', item === chip); item.setAttribute('aria-selected', String(item === chip)); });
+      const scope = root.closest('section')?.parentElement || document;
+      scope.querySelectorAll('[data-category-section]').forEach((section) => { section.toggleAttribute('hidden', value !== 'todas' && section.getAttribute('data-category-section') !== value); });
+      const target = root.getAttribute('data-target');
+      if (target) document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (value === 'todas') history.replaceState(null, '', location.pathname);
+      else history.replaceState(null, '', `${location.pathname}#${value}`);
+      const match = value === 'todas' ? null : scope.querySelector(`[data-category-section="${value}"]`);
+      if (match && value !== 'todas') match.querySelector<HTMLButtonElement>('.accordion-trigger')?.click();
+    }));
+  });
+</script>

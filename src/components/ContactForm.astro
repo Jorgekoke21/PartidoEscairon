@@ -1,0 +1,19 @@
+---
+interface Props { context?: string; }
+const { context = '' } = Astro.props;
+---
+<form class="contact-form" data-contact-form>
+  {context && <input type="hidden" name="parroquia" value={context} />}
+  <div class="form-row"><label><span class="sr-only">Nome</span><input required name="nome" placeholder="Nome" autocomplete="name" /></label><label><span class="sr-only">Email</span><input required type="email" name="email" placeholder="Email" autocomplete="email" /></label></div>
+  <label><span class="sr-only">A túa proposta</span><textarea required name="proposta" placeholder="A túa proposta" rows="3"></textarea></label>
+  <button class="button button-primary" type="submit">{context ? 'Enviar proposta' : 'Enviar'} <span>→</span></button>
+  <p class="form-status" role="status" aria-live="polite"></p>
+</form>
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const status = form.querySelector('.form-status');
+    if (status) status.textContent = 'Grazas. A túa mensaxe queda preparada para ser enviada cando se conecte o servizo real.';
+    form.reset();
+  }));
+</script>

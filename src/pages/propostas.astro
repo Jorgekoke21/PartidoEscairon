@@ -1,0 +1,36 @@
+---
+import { Home, BusFront, TreePine } from 'lucide-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlaceholderPhoto from '../components/PlaceholderPhoto.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CategoryChips from '../components/CategoryChips.astro';
+import ProposalAccordion from '../components/ProposalAccordion.astro';
+import ContactForm from '../components/ContactForm.astro';
+import StatsBand from '../components/StatsBand.astro';
+import { categories } from '../data/categories';
+import { proposals } from '../data/proposals';
+import { parishes } from '../data/parishes';
+const params = new URL(Astro.request.url).searchParams;
+const active = params.get('categoria') ?? 'todas';
+const counts = categories.map((category) => ({ ...category, items: proposals.filter((proposal) => proposal.category === category.slug) }));
+const featured = proposals.filter((proposal) => proposal.featured).slice(0, 3);
+---
+<BaseLayout title="As nosas propostas · PSOE O Saviñao" active="/propostas">
+  <section class="page-hero"><div class="container page-hero-inner"><div class="page-hero-copy"><span class="eyebrow-line"></span><h1>As nosas<br /><span class="accent">propostas</span></h1><p>Propostas concretas para mellorar a vida da veciñanza de O Saviñao.</p></div><div class="page-hero-media"><PlaceholderPhoto label="Fotografía panorámica de O Saviñao · pendente de substituír" /></div></div></section>
+  <div class="container"><StatsBand areas={categories.length} proposals={proposals.length} parishes={parishes.length} /></div>
+  <section class="section soft proposals-page"><div class="container"><SectionHeading title="Explora as propostas por temática" note="Atopa facilmente o que máis che interesa." /><CategoryChips active={active} target="all-proposals" /><div class="search-row" style="margin-top:20px"><label><span class="sr-only">Buscar propostas</span><input id="proposal-search" type="search" placeholder="Busca unha proposta..." /></label><button class="button button-primary" id="search-button">Buscar</button></div></div></section>
+  <section class="section proposals-page" id="all-proposals"><div class="container"><SectionHeading title="Todas as propostas" note="Propostas reais para un concello mellor." /><div id="proposal-list">{counts.map((category, index) => <div data-category-section={category.slug}><ProposalAccordion categorySlug={category.slug} items={category.items} open={active === category.slug || (active === 'todas' && index === 0)} showRows /></div>)}</div><p class="empty-note" id="empty-results" hidden>Non atopamos propostas para esta busca. A estrutura está preparada para incorporar máis contido real.</p></div></section>
+  <section class="section soft"><div class="container"><SectionHeading title="Propostas destacadas" note="Tres ideas clave para un O Saviñao mellor." /><div class="featured-grid">{featured.map((item, index) => <div class="featured-item">{index === 0 ? <Home size={34} /> : index === 1 ? <BusFront size={34} /> : <TreePine size={34} />}<div><strong>{item.title}</strong><p>{item.summary}</p><a href={`#${item.category}`}>Ver proposta →</a></div></div>)}</div></div></section>
+  <section class="participation"><div class="container participation-layout"><div class="participation-copy"><h2>Tes unha idea para O Saviñao?</h2><p>A túa proposta tamén conta. Comparte connosco as túas ideas e axúdanos a construír un mellor O Saviñao.</p></div><ContactForm /><div class="footer-mark">Entre todas<br />e todos,<br />un mellor<br />O Saviñao</div></div></section>
+</BaseLayout>
+<script>
+  const input = document.querySelector<HTMLInputElement>('#proposal-search');
+  const empty = document.querySelector('#empty-results');
+  input?.addEventListener('input', () => {
+    const query = input.value.trim().toLowerCase(); let visible = 0;
+    document.querySelectorAll('[data-category-section]').forEach((section) => {
+      const text = section.textContent?.toLowerCase() || ''; const show = !query || text.includes(query); section.toggleAttribute('hidden', !show); if (show) visible++;
+    });
+    if (empty) empty.toggleAttribute('hidden', visible > 0);
+  });
+</script>

@@ -1,0 +1,8 @@
+---
+interface Props { label?: string; variant?: 'landscape'|'parish'; }
+const { label = 'Fotografía territorial pendente', variant = 'landscape' } = Astro.props;
+---
+<div class={`photo-placeholder ${variant}`} role="img" aria-label={label}>
+  <div class="placeholder-mark"><span></span><span></span><span></span></div>
+  <span>{label}</span>
+</div>

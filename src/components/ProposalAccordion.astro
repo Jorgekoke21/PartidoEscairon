@@ -1,0 +1,41 @@
+---
+import { ChevronDown, UsersRound, Lightbulb, Settings2, Target } from 'lucide-astro';
+import { categories } from '../data/categories';
+import type { Proposal } from '../data/proposals';
+
+interface Props { categorySlug: string; items: Proposal[]; open?: boolean; showRows?: boolean; }
+const { categorySlug, items, open = false, showRows = false } = Astro.props;
+const category = categories.find((item) => item.slug === categorySlug);
+if (!category) throw new Error(`Unknown category: ${categorySlug}`);
+const first = items[0];
+---
+<section class="proposal-accordion" data-category={category.slug}>
+  <button class="accordion-trigger" aria-expanded={open ? 'true' : 'false'} aria-controls={`panel-${category.slug}`}>
+    <span class="accordion-sign">{open ? '−' : '+'}</span><span class="accordion-title">{category.name}</span><span class="accordion-count">{items.length} {items.length === 1 ? 'proposta' : 'propostas'}</span><ChevronDown class="accordion-chevron" size={17} strokeWidth={1.8} />
+  </button>
+  <div class="accordion-panel" id={`panel-${category.slug}`} hidden={!open}>
+    {first && <div class="proposal-detail-grid">
+      <div class="proposal-detail"><UsersRound size={29} /><div><strong>Problema</strong><p>{first.problem}</p></div></div>
+      <div class="proposal-detail"><Lightbulb size={29} /><div><strong>A nosa proposta</strong><p>{first.proposal}</p></div></div>
+      <div class="proposal-detail"><Settings2 size={29} /><div><strong>Como o faremos</strong><p>{first.implementation}</p></div></div>
+      <div class="proposal-detail"><Target size={29} /><div><strong>Impacto</strong><p>{first.impact}</p></div></div>
+    </div>}
+    {showRows && items.slice(1).map((item) => <a class="proposal-row" href={`/propostas#${item.slug}`}><span>›</span><span>{item.title}</span><span>Ver proposta →</span></a>)}
+    {!showRows && items.slice(1).map((item) => <div class="proposal-row static"><span>›</span><span>{item.title}</span></div>)}
+  </div>
+</section>
+<script>
+  document.querySelectorAll('.accordion-trigger').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const section = trigger.closest('.proposal-accordion');
+      const panel = section?.querySelector('.accordion-panel');
+      if (!section || !panel) return;
+      const willOpen = trigger.getAttribute('aria-expanded') !== 'true';
+      trigger.setAttribute('aria-expanded', String(willOpen));
+      const sign = trigger.querySelector<HTMLElement>('.accordion-sign');
+      if (sign) sign.textContent = willOpen ? '−' : '+';
+      panel.toggleAttribute('hidden', !willOpen);
+      section.classList.toggle('is-open', willOpen);
+    });
+  });
+</script>

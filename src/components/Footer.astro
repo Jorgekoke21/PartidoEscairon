@@ -1,0 +1,17 @@
+---
+import { Instagram, Facebook, Mail } from 'lucide-astro';
+import { site } from '../data/site';
+---
+<footer class="site-footer">
+  <div class="container footer-main">
+    <a class="footer-brand" href="/">PSOE O Saviñao</a>
+    <p>Compromiso coas persoas. Compromiso co noso concello.</p>
+    <nav class="footer-links" aria-label="Ligazóns do pé de páxina">
+      {site.navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <div class="footer-social" aria-label="Redes sociais e contacto">
+      <span><Instagram size={17} /> Instagram</span><span><Facebook size={17} /> Facebook</span><a href="/contacto"><Mail size={17} /> Contacto</a>
+    </div>
+  </div>
+  <div class="container footer-legal"><span>Contido de demostración · Substituír polos datos reais</span><div><a href="/aviso-legal">Aviso legal</a><a href="/privacidade">Privacidade</a></div><span>O Saviñao sempre.</span></div>
+</footer>

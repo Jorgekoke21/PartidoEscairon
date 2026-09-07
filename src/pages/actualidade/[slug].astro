@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const article = { title:'Un proxecto aberto á veciñanza', date:'Pendente de data', summary:'Esta páxina está preparada para publicar novas, actos e información de interese.' };
+export function getStaticPaths() { return [{ params: { slug: 'un-proxecto-aberto' } }, { params: { slug: 'escoitar-para-propoñer' } }]; }
+---
+<BaseLayout title={`${article.title} · PSOE O Saviñao`} active="/actualidade">
+  <article class="simple-page"><div class="container page-intro"><span class="eyebrow-line"></span><div class="article-date">{article.date}</div><h1>{article.title}</h1><p>{article.summary}</p></div><div class="container section"><p class="empty-note">Contido de demostración pendente de substituír por unha nova real. A estrutura permite engadir data, título, resumo, fotografía e corpo do artigo.</p></div></article>
+</BaseLayout>

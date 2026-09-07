@@ -1,0 +1,28 @@
+---
+import { Route, SprayCan, TreePine, Landmark } from 'lucide-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import PlaceholderPhoto from '../components/PlaceholderPhoto.astro';
+import CategoryChips from '../components/CategoryChips.astro';
+import ProposalAccordion from '../components/ProposalAccordion.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { categories } from '../data/categories';
+import { proposals } from '../data/proposals';
+import { parishes } from '../data/parishes';
+
+const priorities = ['Coidar as parroquias', 'Apoiar o rural', 'Crear oportunidades para a mocidade', 'Mellorar os servizos públicos', 'Un concello máis transparente'];
+const escairon = parishes[0];
+---
+<BaseLayout title="PSOE O Saviñao · O Saviñao que queremos" active="">
+  <section class="hero"><div class="container hero-inner"><div class="hero-copy"><span class="eyebrow-line"></span><h1>O Saviñao<br /><span class="accent">que queremos</span></h1><p>Propostas concretas para mellorar a vida da veciñanza, das parroquias e do noso rural.</p><div class="hero-actions"><a class="button button-primary" href="/propostas">Ver as propostas <span>→</span></a><a class="text-link" href="#proxecto">Coñece o noso proxecto</a></div></div><div class="hero-visual"><PlaceholderPhoto label="Fotografía de O Saviñao · pendente de substituír" /></div></div></section>
+  <section class="section" id="proxecto"><div class="container"><SectionHeading title="As nosas prioridades" note="Un O Saviñao mellor, entre todas e todos." /><div class="priority-list">{priorities.map((priority, index) => <div class="priority"><span class="priority-number">{String(index + 1).padStart(2, '0')}</span><span class="priority-title">{priority}</span></div>)}</div></div></section>
+  <section class="concerns" id="preocupacions"><div class="container"><SectionHeading title="Que che preocupa?" note="Escoitamos. Propoñemos. Facemos." /><CategoryChips target="propostas-home" /></div></section>
+  <section class="section proposals-section" id="propostas-home"><div class="container"><SectionHeading title="As nosas propostas" note="Ideas reais para un concello real." />{categories.slice(0, 6).map((category, index) => <div data-category-section={category.slug}><ProposalAccordion categorySlug={category.slug} items={proposals.filter((proposal) => proposal.category === category.slug)} open={index === 0} showRows={index === 0} /></div>)}</div></section>
+  <section class="section parish-overview"><div class="container"><SectionHeading title="O Saviñao parroquia a parroquia" note="Cada parroquia conta." /><div class="parish-layout"><div class="parish-select-wrap"><label for="parish-select">Selecciona a túa parroquia</label><select id="parish-select"><option value="escairon">Escairón</option>{parishes.slice(1).map((parish) => <option value={parish.slug}>{parish.name}</option>)}</select></div><div class="parish-themes"><h3 id="selected-parish-name">Temas en Escairón</h3>{escairon.areas.map((area, index) => <div class="theme-row">{index === 0 ? <Route size={20} /> : index === 1 ? <SprayCan size={20} /> : index === 2 ? <TreePine size={20} /> : <Landmark size={20} />}<span>{area.replace(' para a veciñanza','')}</span><a href={`/parroquias/${escairon.slug}`}>Ver proposta →</a></div>)}</div><div class="parish-image"><PlaceholderPhoto variant="parish" label="Imaxe da parroquia · pendente de substituír" /></div></div></div></section>
+  <section class="participation"><div class="container participation-layout"><div class="participation-copy"><h2>Tes unha proposta<br />para O Saviñao?</h2><p>A túa idea tamén conta. Comparte connosco as túas inquietanzas e axúdanos a construír un mellor O Saviñao.</p></div><ContactForm /><div class="footer-mark">Entre todas e todos,<br />un mellor<br />O Saviñao</div></div></section>
+</BaseLayout>
+<script>
+  const select = document.querySelector<HTMLSelectElement>('#parish-select');
+  const title = document.querySelector('#selected-parish-name');
+  select?.addEventListener('change', () => { const label = select.options[select.selectedIndex]?.text; if (title) title.textContent = `Temas en ${label}`; });
+</script>

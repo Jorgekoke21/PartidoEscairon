@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import PlaceholderPhoto from '../../components/PlaceholderPhoto.astro';
+import { parishes } from '../../data/parishes';
+---
+<BaseLayout title="As nosas parroquias · PSOE O Saviñao" active="/parroquias">
+  <section class="page-intro"><div class="container"><span class="eyebrow-line"></span><h1>As nosas<br /><span class="accent">parroquias</span></h1><p>O Saviñao é unha suma de lugares, persoas e historias. Atopa a túa parroquia.</p></div></section>
+  <section class="section soft"><div class="container"><SectionHeading title="Atopa a túa parroquia" note="Cada lugar importa." /><div class="search-row" style="margin-bottom:26px"><label><span class="sr-only">Busca a túa parroquia</span><input id="parish-search" type="search" placeholder="Busca a túa parroquia" /></label><button class="button button-primary" id="parish-search-button">Buscar</button></div><div class="parish-list" id="parish-list">{parishes.map((parish, index) => <a class="parish-list-item" href={`/parroquias/${parish.slug}`}><span class="parish-list-number">{String(index + 1).padStart(2,'0')}</span><span><h3>{parish.name}</h3><p>{parish.summary}</p></span><span class="arrow-link">Ver parroquia →</span></a>)}</div><p class="empty-note" id="parish-empty" hidden>Non atopamos esa parroquia na estrutura de demostración.</p></div></section>
+  <section class="section"><div class="container"><div class="team-note"><PlaceholderPhoto variant="parish" label="Fotografías parroquiais · pendentes de substituír" /><div><SectionHeading title="Territorio. Xente. Futuro." note="Un proxecto feito preto." /><p class="empty-note">Esta versión inclúe só parroquias de demostración para deixar preparada a estrutura editorial. Os datos reais poden incorporarse desde <code>src/data/parishes.ts</code>.</p></div></div></div></section>
+</BaseLayout>
+<script>
+  const input = document.querySelector<HTMLInputElement>('#parish-search'); const empty = document.querySelector('#parish-empty');
+  input?.addEventListener('input', () => { const query = input.value.toLowerCase().trim(); let visible = 0; document.querySelectorAll('.parish-list-item').forEach((item) => { const show = !query || (item.textContent || '').toLowerCase().includes(query); item.toggleAttribute('hidden', !show); if(show) visible++; }); empty?.toggleAttribute('hidden', visible > 0); });
+</script>

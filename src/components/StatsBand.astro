@@ -1,0 +1,5 @@
+---
+interface Props { areas: number; proposals: number; parishes: number; }
+const { areas, proposals, parishes } = Astro.props;
+---
+<div class="stats-band"><div class="stat"><strong>{areas}</strong><span>áreas<br />de actuación</span></div><div class="stat"><strong>{proposals}</strong><span>propostas<br />en construción</span></div><div class="stat"><strong>{parishes}</strong><span>parroquias<br />de demostración</span></div></div>

@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+const articles = [{ slug:'un-proxecto-aberto', date:'Pendente de data', title:'Un proxecto aberto á veciñanza', summary:'Esta páxina está preparada para publicar novas, actos e información de interese.' }, { slug:'escoitar-para-propoñer', date:'Pendente de data', title:'Escoitar para propoñer', summary:'O contido de actualidade poderá medrar desde unha colección de contidos estruturados.' }];
+---
+<BaseLayout title="Actualidade · PSOE O Saviñao" active="/actualidade">
+  <section class="page-intro"><div class="container"><span class="eyebrow-line"></span><h1>Actualidade</h1><p>As cousas que pasan, contadas de forma clara e próxima.</p></div></section>
+  <section class="section soft"><div class="container"><SectionHeading title="Últimas novas" note="Contido de demostración." /><div class="article-list">{articles.map((article) => <article class="article-item"><div class="article-date">{article.date}</div><h2><a href={`/actualidade/${article.slug}`}>{article.title}</a></h2><p>{article.summary}</p><a class="arrow-link" href={`/actualidade/${article.slug}`}>Ler máis →</a></article>)}</div></div></section>
+</BaseLayout>
