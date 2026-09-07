@@ -2,3 +2,12 @@ node_modules/
 dist/
 .astro/
 .DS_Store
+.env
+.env.*
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+Thumbs.db
