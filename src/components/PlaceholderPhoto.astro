@@ -3,6 +3,6 @@ interface Props { label?: string; variant?: 'landscape'|'parish'; src?: string; 
 const { label = 'Fotografía territorial pendente', variant = 'landscape', src } = Astro.props;
 import { route } from '../data/site';
 ---
-<div class={`photo-placeholder ${variant}`} role="img" aria-label={label}>
+<div class={`photo-placeholder ${variant} ${src ? 'has-image' : ''}`} role="img" aria-label={label}>
   {src ? <img class="photo-image" src={route(src)} alt={label} loading={variant === 'landscape' ? 'eager' : 'lazy'} /> : <><div class="placeholder-mark"><span></span><span></span><span></span></div><span>{label}</span></>}
 </div>
