@@ -41,6 +41,7 @@ button { cursor:pointer; }
 .hero-visual { min-height:388px; position:relative; width:calc(100% + 5.5vw); margin-right:-5.5vw; }
 .hero-visual::before { content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.86) 9%,rgba(255,255,255,0) 44%); pointer-events:none; }
 .photo-placeholder { background:#eaf0f3; color:#707983; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; min-height:100%; height:100%; position:relative; overflow:hidden; }
+.photo-image { width:100%; height:100%; object-fit:cover; display:block; }
 .hero-visual > .photo-placeholder, .page-hero-media > .photo-placeholder { position:absolute; inset:0; min-height:0; height:auto; }
 .photo-placeholder::before { content:''; position:absolute; inset:0; opacity:.35; background:linear-gradient(165deg,transparent 52%,#b7c7cf 52%,#b7c7cf 54%,transparent 54%),linear-gradient(25deg,transparent 61%,#cbd6dc 61%,#cbd6dc 63%,transparent 63%); }
 .photo-placeholder > * { position:relative; z-index:1; }
